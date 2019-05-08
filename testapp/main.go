@@ -2,6 +2,7 @@ package main // import "github.com/trevex/linkerd-test/testapp"
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/imroc/req"
@@ -20,6 +21,7 @@ func test(c *gin.Context) {
 	}
 	c.Header("x-figo-rid", "-")
 	c.Header("x-figo-rid", "foobar")
+	time.Sleep(1000 * time.Millisecond)
 	c.String(201, str)
 }
 
