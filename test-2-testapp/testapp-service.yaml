@@ -1,0 +1,60 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  testapp
+      prefix: /
+      service: http://testapp.migration.svc.cluster.local:80
+      add_request_headers:
+        l5d-dst-override: testapp.migration.svc.cluster.local:80
+      timeout_ms: 60000
+      cors:
+        origins: "*"
+        methods: POST, GET, DELETE, OPTIONS
+        headers:
+          - X-Requested-With
+          - Accept
+          - Content-Type
+          - Origin
+          - Authorization
+        credentials: true
+        max_age: "86400"
+
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  testapp-v3
+      prefix: /v3/
+      rewrite: /
+      service: http://testapp.migration.svc.cluster.local:80
+      add_request_headers:
+        l5d-dst-override: testapp.migration.svc.cluster.local:80
+      timeout_ms: 60000
+      cors:
+        origins: "*"
+        methods: POST, GET, DELETE, OPTIONS
+        headers:
+          - X-Requested-With
+          - Accept
+          - Content-Type
+          - Origin
+          - Authorization
+        credentials: true
+        max_age: "86400"
+
+  name: testapp
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: testapp
+
