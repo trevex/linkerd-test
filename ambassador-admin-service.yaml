@@ -1,0 +1,20 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ambassador-admin
+  labels:
+    app: ambassador
+    chart: ambassador-0.60.3
+    release: test
+    heritage: Tiller
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8877
+      targetPort: admin
+      protocol: TCP
+      name: admin
+  selector:
+    app: ambassador
+    release: test

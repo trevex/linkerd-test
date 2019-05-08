@@ -1,0 +1,39 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: ambassador
+  labels:
+    app: ambassador
+    chart: ambassador-0.60.3
+    release: test
+    heritage: Tiller
+rules:
+  - apiGroups: [""]
+    resources:
+    - services
+    - secrets
+    - endpoints
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources:
+    - configmaps
+    verbs: ["create", "update", "patch", "get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: ambassador
+  labels:
+    app: ambassador
+    chart: ambassador-0.60.3
+    release: test
+    heritage: Tiller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: ambassador
+subjects:
+  - name: ambassador
+    namespace: "migration"
+    kind: ServiceAccount
