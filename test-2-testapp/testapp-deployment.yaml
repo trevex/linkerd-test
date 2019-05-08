@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: testapp
-          image: trevex/testapp:0.1.0
+          image: trevex/testapp:0.2.0
           imagePullPolicy: IfNotPresent
           ports:
           - name: http

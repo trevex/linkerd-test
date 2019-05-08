@@ -18,6 +18,8 @@ func test(c *gin.Context) {
 		c.String(503, fmt.Sprintf("%v", err))
 		return
 	}
+	c.Header("x-figo-rid", "-")
+	c.Header("x-figo-rid", "foobar")
 	c.String(201, str)
 }
 
